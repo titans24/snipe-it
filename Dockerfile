@@ -9,8 +9,8 @@ RUN export DEBIAN_FRONTEND=noninteractive; \
     export DEBCONF_NONINTERACTIVE_SEEN=true; \
     echo 'tzdata tzdata/Areas select Etc' | debconf-set-selections; \
     echo 'tzdata tzdata/Zones/Etc select UTC' | debconf-set-selections; \
-    apt-get update -qqy \
- && apt-get install -qqy --no-install-recommends \
+    apt-get update -y \
+ && apt-get install -y --no-install-recommends \
 apt-utils \
 apache2 \
 apache2-bin \
@@ -129,6 +129,8 @@ VOLUME ["/var/lib/snipeit"]
 COPY docker/startup.sh docker/supervisord.conf /
 COPY docker/supervisor-exit-event-listener /usr/bin/supervisor-exit-event-listener
 RUN chmod +x /startup.sh /usr/bin/supervisor-exit-event-listener
+RUN touch /var/www/html/storage/logs/laravel.log
+RUN chmod 666 /var/www/html/storage/logs/laravel.log
 
 CMD ["/startup.sh"]
 
